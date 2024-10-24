@@ -47,4 +47,4 @@ jobs:
 
       - name: Deploy Services
         run: |
-          chmod +x ./build-tools/deployment.sh && ./build-tools/deployment.sh -m $MODE -i $HOST -u $USERNAME -s ~/.ssh/id_rsa -d $(pwd) -r /frontend_experience/wordpress
+          chmod +x ./build-tools/deployment.sh && ./build-tools/deployment.sh -m $MODE -i $HOST -u $USERNAME -s ~/.ssh/id_rsa -d $(pwd) -r $REMOTE_SERVER_PATH
