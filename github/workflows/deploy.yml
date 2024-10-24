@@ -1,4 +1,4 @@
-name: Deploy Wordpress
+name: Deploy Wordpress CMS
 
 on:
     workflow_dispatch: {}
@@ -10,8 +10,8 @@ env:
   PASSWORD: '${{ secrets.PASSWORD }}'
   WORDPRESS_DB: '${{ secrets.WORDPRESS_DB }}'
   WORDPRESS_DB_USER: '${{ secrets.WORDPRESS_DB_USER }}'
+  REMOTE_WORDPRESS_DIRECTORY: '${{ secrets.REMOTE_WORDPRESS_DIRECTORY }}'
   WORDPRESS_DB_PASSWORD: '${{ secrets.WORDPRESS_DB_PASSWORD }}'
-  REMOTE_SERVER_PATH: '${{ vars.REMOTE_SERVER_PATH }}'
   MODE: prod
 
 
@@ -48,4 +48,4 @@ jobs:
 
       - name: Deploy Services
         run: |
-          chmod +x ./build-tools/deployment.sh && ./build-tools/deployment.sh -m $MODE -i $HOST -u $USERNAME -s ~/.ssh/id_rsa -d $(pwd) -r $REMOTE_SERVER_PATH
+          chmod +x ./build-tools/deployment.sh && ./build-tools/deployment.sh -m $MODE -i $HOST -u $USERNAME -s ~/.ssh/id_rsa -d $(pwd) -r "$REMOTE_WORDPRESS_DIRECTORY"
