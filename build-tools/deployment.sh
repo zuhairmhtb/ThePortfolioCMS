@@ -40,9 +40,15 @@ if [ -z $base_directory ];
 then
     echo "Please provide the base directory path using the parameter '-d'"
     exit 1
+
+if [ -z $serverBaseDirectory ];
+then
+    echo "Please provide the server base directory path using the parameter '-r'"
+    exit 1
+fi
 fi
 
-echo "Running deployment script for application mode '$mode' from directory '$base_directory' to server '$server_username@$server_ip'"
+echo "Running deployment script for application mode '$mode' from directory '$base_directory' to server '$server_username@$server_ip' with remote base directory '$serverBaseDirectory'"
 # Server variables
 server="$server_username@$server_ip" # Server info
 localBaseDirectory=$base_directory # Base directory on the local machine
