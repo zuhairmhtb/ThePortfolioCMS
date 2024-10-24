@@ -1,0 +1,50 @@
+name: Deploy Wordpress
+
+on:
+    workflow_dispatch: {}
+
+
+env:
+  HOST: '${{ secrets.HOST }}'
+  USERNAME: '${{ secrets.USERNAME }}'
+  PASSWORD: '${{ secrets.PASSWORD }}'
+  WORDPRESS_DB: '${{ secrets.WORDPRESS_DB }}'
+  WORDPRESS_DB_USER: '${{ secrets.WORDPRESS_DB_USER }}'
+  WORDPRESS_DB_PASSWORD: '${{ secrets.WORDPRESS_DB_PASSWORD }}'
+  MODE: prod
+
+
+
+
+jobs:
+  deploy:
+    name: Deploying Wordpress application
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout the repository to the runner
+        uses: actions/checkout@v2
+
+      - name: Create ssh directory
+        run: mkdir ~/.ssh
+
+      - name: Add ssh known hosts
+        run: ssh-keyscan $HOST >> ~/.ssh/known_hosts
+
+      - name: Copy contents of password to SSH key
+        run: echo "$PASSWORD" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && chmod 700 ~/.ssh
+
+
+      - name: Generate env file
+        run: |
+            echo "MODE=$MODE" > .env
+            echo "WORDPRESS_DB=$WORDPRESS_DB" >> .env
+            echo "WORDPRESS_DB_USER=$WORDPRESS_DB_USER" >> .env
+            echo "WORDPRESS_DB_PASSWORD=$WORDPRESS_DB_PASSWORD" >> .env
+            cat .env
+
+      - name: Deploy Services
+        run: |
+          chmod +x ./build-tools/deployment.sh && ./build-tools/deployment.sh -m $MODE -i $HOST -u $USERNAME -s ~/.ssh/id_rsa -d $(pwd) -r /frontend_experience/wordpress

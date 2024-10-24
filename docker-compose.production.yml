@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+
+  cms:
+    image: wordpress:php8.3-apache
+    container_name: myportfolio-wordpresscms
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB}
+      WORDPRESS_DEBUG: 0
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - platform_net
+
+  db:
+    image: mysql:8.0
+    container_name: myportfolio-mysqldb
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${WORDPRESS_DB}
+      MYSQL_USER: ${WORDPRESS_DB_USER}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - ./development/db:/var/lib/mysql
+    networks:
+      - platform_net
+
+
+networks:
+  platform_net:
+    driver: bridge
+    name: my-portfolio-network
+    external: true
