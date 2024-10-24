@@ -11,6 +11,7 @@ env:
   WORDPRESS_DB: '${{ secrets.WORDPRESS_DB }}'
   WORDPRESS_DB_USER: '${{ secrets.WORDPRESS_DB_USER }}'
   WORDPRESS_DB_PASSWORD: '${{ secrets.WORDPRESS_DB_PASSWORD }}'
+  REMOTE_SERVER_PATH: '${{ vars.REMOTE_SERVER_PATH }}'
   MODE: prod
 
 
