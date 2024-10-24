@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while getopts i:u:m:s:d:r flag
+while getopts i:u:m:s:d:r: flag
 do
     case "${flag}" in
         i) server_ip=${OPTARG};; # IP address of the server
